@@ -1,7 +1,8 @@
 ﻿<Properties StartupConfiguration="{2D90F423-058C-43C3-B5C0-3A9F74A951BA}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="SkypeCommunicate/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SkypeCommunicate Status">
     <Files>
-      <File FileName="SkypeCommunicate/Program.cs" Line="1" Column="1" />
+      <File FileName="SkypeCommunicate/Program.cs" Line="11" Column="47" />
+      <File FileName="SkypeCommunicate Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
