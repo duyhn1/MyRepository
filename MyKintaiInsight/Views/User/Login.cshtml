@@ -1,0 +1,55 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+        <div class="container">
+			<div class="panel panel-default">
+				<div class="panel-heading">Login</div>
+				<div class="panel-body">
+                    <form class="form" method="post">
+						<div class="form-group">
+                            <label for="username">Username</label>
+							<input type="text" name="username" id="username" class="form-control">        
+						</div>
+						<div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="text" name="password" id="password" class="form-control">        
+                        </div>
+						<div>
+							<button type="submit" id="btnlogin" class="btn btn-info">Login</button>
+                        </div>
+						<div>@ViewBag.result</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<script>
+			<!--$(document).ready(function(){
+                $('#btnlogin').click(function(){
+        			var data = {
+                        userId: 'anynomous',
+        			    password: 'anynomous'
+        			};
+                    $.post({
+                        url: 'https://employee.fjpservice.com/api/login',
+			            type: 'json',
+			            data: data,
+			            success: function(resp){
+                            alert(resp);
+			            }
+			        });
+			    });
+			});-->
+		</script>
+</body>
+</html>
+
