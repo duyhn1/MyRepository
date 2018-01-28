@@ -1,0 +1,69 @@
+﻿@model MyKintaiInsight.Models.User.WorkplaceModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <meta name="latLoc" content="@Model.latitude">
+	<meta name="lngLoc" content="@Model.longitute">
+		<style>
+    		#map {
+                height: 600px;
+                width: 100%;
+            }
+		</style>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+		<div class="container">
+			<div id="map"></div>
+			<div style="margin-top:10px;">
+                <button id="btnCheckin" class="btn btn-primary">Check-in</button>
+                <button id="btnCheckout" class="btn btn-success">Check-out</button>
+			</div>
+		</div>
+    	<script>
+          function initMap() {
+            var myLocation = {lat: @Model.latitude, lng: @Model.longitute};
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 16,
+              center: myLocation
+            });
+            var marker = new google.maps.Marker({
+              position: myLocation,
+              map: map
+            });
+    		var locationCircle = new google.maps.Circle({
+                strokeColor: '#0000FF',
+                strokeOpacity: 0.6,
+                strokeWeight: 1,
+                fillColor: '#0000FF',
+                fillOpacity: 0.2,
+                map: map,
+                center: myLocation,
+                radius: 200
+              });
+    		var center = new google.maps.Circle({
+                strokeColor: '#FFFFFF',
+                strokeOpacity: 1,
+                strokeWeight: 2,
+                fillColor: '#0000FF',
+                fillOpacity: 1,
+                map: map,
+                center: myLocation,
+                radius: 15
+              });
+          }
+        </script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkfJu545YI3KK1uEoWN18klG0df06QqQY&callback=initMap">
+        </script>
+</body>
+</html>
+

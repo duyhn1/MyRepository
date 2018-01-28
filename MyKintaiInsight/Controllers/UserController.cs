@@ -14,7 +14,9 @@ namespace MyKintaiInsight.Controllers
 {
     public class UserController : Controller
     {
+        private readonly HttpClient client = new HttpClient();
         private readonly string loginUrl = "https://employee.fjpservice.com/api/login";
+        private readonly string getWorkplaceUrl = "https://api.fjpservice.com/api/dakoku/workplace";
         public ActionResult Login()
         {
             return View();
@@ -28,17 +30,32 @@ namespace MyKintaiInsight.Controllers
                 { "userId", model.username },
                 { "password", model.password }
             };
-            HttpClient client = new HttpClient();
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var respone = client.PostAsJsonAsync(loginUrl, data).Result;
-            var result = respone.Content.ReadAsStringAsync().Result;
+            var response = client.PostAsJsonAsync(loginUrl, data).Result;
+            var result = response.Content.ReadAsStringAsync().Result;
             var loginSuccess = JsonConvert.DeserializeObject<LoginSuccessModel>(result);
-            if(string.IsNullOrEmpty(loginSuccess.access_token)) 
+            if(!string.IsNullOrEmpty(loginSuccess.access_token)) 
             {
+                Session.Add("access_token", loginSuccess.access_token);
+                Session.Add("expires", loginSuccess.expires_in);
                 return RedirectToAction("Dashboard");
             }
             return View();
+        }
+        public ActionResult Dashboard() 
+        {
+            var access_token = Session["access_token"] as string;
+            if(string.IsNullOrEmpty(access_token))
+            {
+                RedirectToAction("Login");
+            }
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", access_token);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = client.GetAsync(getWorkplaceUrl).Result;
+            var result = response.Content.ReadAsStringAsync().Result;
+            var workplace = JsonConvert.DeserializeObject<WorkplaceModel>(result);
+            return View(workplace);
         }
     }
 }
