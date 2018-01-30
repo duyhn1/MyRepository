@@ -64,6 +64,44 @@
         <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkfJu545YI3KK1uEoWN18klG0df06QqQY&callback=initMap">
         </script>
+    <script>
+        $(document).ready(function(){
+            $('#btnCheckin').click(function(){
+                $.ajax({
+                    method: 'post',
+                    url: '/User/CheckIn',
+                    data: {lat: @Model.latitude, lng: @Model.longitute},
+                    success: function(data) {
+                        if (data.errors) {
+                            alert(data.errors.errorMessage);
+                        } else {
+                            alert('Check in success');
+                        }
+                    },
+                    error: function(err) {
+                        console.error(err);
+                    }
+                })
+            })
+            $('#btnCheckout').click(function(){
+                $.ajax({
+                    method: 'post',
+                    url: '/User/CheckOut',
+                    data: {lat: @Model.latitude, lng: @Model.longitute},
+                    success: function() {
+                        if (data.errors) {
+                            alert(data.errors.errorMessage);
+                        } else {
+                            alert('Check out success');
+                        }
+                    },
+                    error: function(err) {
+                        console.error(err);
+                    }
+                })
+            })
+        });
+    </script>
 </body>
 </html>
 
