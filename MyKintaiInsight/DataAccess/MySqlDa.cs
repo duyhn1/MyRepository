@@ -1,26 +1,26 @@
 ﻿using System.Web.Configuration;
-using System.Data.SqlClient;
 using System.Data;
 using System.Collections.Generic;
+using MySql.Data.MySqlClient;
 
 namespace MyKintaiInsight.DataAccess
 {
-    public class SqlDa
+    public class MySqlDa
     {
         private static string connectionString;
-        private static SqlDa _instance = null;
-        private SqlConnection conn;
-        private SqlDa()
+        private static MySqlDa _instance = null;
+        private MySqlConnection conn;
+        private MySqlDa()
         {
             connectionString = WebConfigurationManager.ConnectionStrings["DbConnection"].ToString();
-            conn = new SqlConnection(connectionString);
+            conn = new MySqlConnection(connectionString);
         }
 
-        public static SqlDa GetInstance()
+        public static MySqlDa GetInstance()
         {
             if (_instance == null)
             {
-                _instance = new SqlDa();
+                _instance = new MySqlDa();
             }
             return _instance;
         }
@@ -28,15 +28,15 @@ namespace MyKintaiInsight.DataAccess
         {
             return ExecuteNonQuery(query, CommandType.Text, null);
         }
-        public int ExecuteNonQuery(string query, CommandType cmdType, List<SqlParameter> paras)
+        public int ExecuteNonQuery(string query, CommandType cmdType, List<MySqlParameter> paras)
         {
             try
             {
                 conn.Open();
-                SqlCommand cmd = conn.CreateCommand();
+                MySqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = query;
                 cmd.CommandType = cmdType;
-                foreach(SqlParameter para in paras)
+                foreach(MySqlParameter para in paras)
                 {
                     cmd.Parameters.Add(para);
                 }

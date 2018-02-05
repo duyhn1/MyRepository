@@ -21,6 +21,14 @@ namespace MyKintaiInsight.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            var ckUsername = Request.Cookies.Get("username");
+            var ckPassword = Request.Cookies.Get("password");
+            var username = ckUsername == null ? null : ckUsername.Value;
+            var password = ckPassword == null ? null : ckPassword.Value;
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            {
+                return Login(new LoginModel { username = username, password = password, remember = false });
+            }
             return View();
         }
 
@@ -39,6 +47,15 @@ namespace MyKintaiInsight.Controllers
             var loginSuccess = JsonConvert.DeserializeObject<LoginSuccessModel>(result);
             if(!string.IsNullOrEmpty(loginSuccess.access_token)) 
             {
+                if (model.remember)
+                {
+                    HttpCookie ckUsername = new HttpCookie("username", model.username);
+                    HttpCookie ckPassword = new HttpCookie("password", model.password);
+                    ckUsername.Expires = DateTime.MaxValue;
+                    ckPassword.Expires = DateTime.MaxValue;
+                    Response.Cookies.Add(ckUsername);
+                    Response.Cookies.Add(ckPassword);
+                }
                 Session.Add("access_token", loginSuccess.access_token);
                 Session.Add("expires", loginSuccess.expires_in);
 
@@ -52,7 +69,7 @@ namespace MyKintaiInsight.Controllers
             var access_token = Session["access_token"] as string;
             if (string.IsNullOrEmpty(access_token))
             {
-                RedirectToAction("Login");
+                return RedirectToAction("Login");
             }
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", access_token);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -67,7 +84,7 @@ namespace MyKintaiInsight.Controllers
             var access_token = Session["access_token"] as string;
             if (string.IsNullOrEmpty(access_token))
             {
-                RedirectToAction("Login");
+                return null;
             }
             var data = new Dictionary<string, object>
             {
@@ -103,7 +120,7 @@ namespace MyKintaiInsight.Controllers
             var access_token = Session["access_token"] as string;
             if (string.IsNullOrEmpty(access_token))
             {
-                RedirectToAction("Login");
+                return null;
             }
             var data = new Dictionary<string, object>
             {

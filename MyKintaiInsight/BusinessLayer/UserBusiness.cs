@@ -1,8 +1,8 @@
 ﻿using MyKintaiInsight.DataAccess;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -19,11 +19,11 @@ namespace MyKintaiInsight.BusinessLayer
             UTF8Encoding encoder = new UTF8Encoding();
             hashedBytes = md5Hasher.ComputeHash(encoder.GetBytes(password));
 
-            var sqlDa = SqlDa.GetInstance();
+            var sqlDa = MySqlDa.GetInstance();
             var stp = "stp_loginSucess";
-            List<SqlParameter> paras = new List<SqlParameter>();
-            SqlParameter paraUserName = new SqlParameter("@username", username);
-            SqlParameter paraPassword = new SqlParameter("@password", hashedBytes);
+            List<MySqlParameter> paras = new List<MySqlParameter>();
+            MySqlParameter paraUserName = new MySqlParameter("@username", username);
+            MySqlParameter paraPassword = new MySqlParameter("@password", hashedBytes);
             paras.Add(paraUserName);
             paras.Add(paraPassword);
             return sqlDa.ExecuteNonQuery(stp, CommandType.StoredProcedure, paras);

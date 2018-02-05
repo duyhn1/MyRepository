@@ -8,17 +8,28 @@
 <html>
 <head>
     <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="latLoc" content="@Model.latitude">
 	<meta name="lngLoc" content="@Model.longitute">
-		<style>
-    		#map {
-                height: 600px;
-                width: 100%;
-            }
-		</style>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+        @@media screen and (max-width: 768px) {
+            .container {
+                width: 100%;
+                position: relative;
+            }
+            #map {
+                height: 90vh;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
 		<div class="container">
@@ -29,37 +40,38 @@
 			</div>
 		</div>
     	<script>
-          function initMap() {
-            var myLocation = {lat: @Model.latitude, lng: @Model.longitute};
-            var map = new google.maps.Map(document.getElementById('map'), {
-              zoom: 16,
-              center: myLocation
-            });
-            var marker = new google.maps.Marker({
-              position: myLocation,
-              map: map
-            });
-    		var locationCircle = new google.maps.Circle({
-                strokeColor: '#0000FF',
-                strokeOpacity: 0.6,
-                strokeWeight: 1,
-                fillColor: '#0000FF',
-                fillOpacity: 0.2,
-                map: map,
-                center: myLocation,
-                radius: 200
-              });
-    		var center = new google.maps.Circle({
-                strokeColor: '#FFFFFF',
-                strokeOpacity: 1,
-                strokeWeight: 2,
-                fillColor: '#0000FF',
-                fillOpacity: 1,
-                map: map,
-                center: myLocation,
-                radius: 15
-              });
-          }
+            function initMap() {
+                var myLocation = { lat: @Model.latitude - Math.random() / 10000, lng: @Model.longitute - Math.random() / 10000 };
+                var myRegisterWork = { lat: @Model.latitude, lng: @Model.longitute};
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 18,
+                    center: myLocation
+                });
+                var marker = new google.maps.Marker({
+                    position: myRegisterWork,
+                    map: map
+                });
+                var locationCircle = new google.maps.Circle({
+                    strokeColor: '#0000FF',
+                    strokeOpacity: 0.6,
+                    strokeWeight: 1,
+                    fillColor: '#0000FF',
+                    fillOpacity: 0.2,
+                    map: map,
+                    center: myLocation,
+                    radius: 200
+                });
+                var center = new google.maps.Circle({
+                    strokeColor: '#FFFFFF',
+                    strokeOpacity: 1,
+                    strokeWeight: 2,
+                    fillColor: '#0000FF',
+                    fillOpacity: 1,
+                    map: map,
+                    center: myLocation,
+                    radius: 5
+                });
+            }
         </script>
         <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkfJu545YI3KK1uEoWN18klG0df06QqQY&callback=initMap">
